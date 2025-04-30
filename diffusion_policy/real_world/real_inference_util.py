@@ -1,4 +1,3 @@
-c
 def get_real_obs_dict(
         env_obs: Dict[str, np.ndarray], 
         shape_meta: dict,

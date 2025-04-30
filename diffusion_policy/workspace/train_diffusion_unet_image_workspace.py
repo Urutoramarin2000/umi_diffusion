@@ -225,7 +225,6 @@ class TrainDiffusionUnetImageWorkspace(BaseWorkspace):
                         
                         # always use the latest batch
                         train_sampling_batch = batch
-
                         # compute loss
                         raw_loss = self.model(batch)
                         loss = raw_loss / cfg.training.gradient_accumulate_every

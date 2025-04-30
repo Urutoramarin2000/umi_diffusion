@@ -7,7 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision
 import logging
-
+from pathlib import Path
 from diffusion_policy.model.common.module_attr_mixin import ModuleAttrMixin
 
 from diffusion_policy.common.pytorch_util import replace_submodules
@@ -68,6 +68,7 @@ class TimmObsEncoder(ModuleAttrMixin):
             feature_aggregation: str='spatial_embedding',
             downsample_ratio: int=32,
             position_encording: str='learnable',
+            local_model_path: str = None
 
         ):
         """
@@ -83,9 +84,18 @@ class TimmObsEncoder(ModuleAttrMixin):
         key_shape_map = dict()
 
         assert global_pool == ''
+        # model = timm.create_model(
+        #     model_name=model_name,
+        #     pretrained=pretrained,
+        #     global_pool=global_pool, # '' means no pooling
+        #     num_classes=0            # remove classification layer
+        # )
+
+        ckpt_path = str(Path(__file__).parent.parent.parent.parent/f'data/outputs/ckpt/pretrained/pytorch_model.bin')
         model = timm.create_model(
             model_name=model_name,
             pretrained=pretrained,
+            pretrained_cfg_overlay=dict(file=ckpt_path),
             global_pool=global_pool, # '' means no pooling
             num_classes=0            # remove classification layer
         )
